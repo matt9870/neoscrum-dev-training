@@ -39,11 +39,10 @@ exports.createUser = async (req, res) => {
             res.status(400).send({ message: "Add proper name and email to proceed" });
             return;
         }
-        userModel.find({ dev_name: 'admin' }, (err) => {
+        userModel.find({ dev_name: res.locals.username }, (err) => {
             if (err || !req.body) {
                 res.status(400).send({ message: "Need to provide details to create a user" })
                 return;
-                //res.locals.username
             }
         }).then(async data => {
             try {

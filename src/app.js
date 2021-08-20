@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(userRouter);
 app.use(feedbackRouter);
+app.use("/images",express.static('images'))
 
 //Enabling the cron jobs
 feedbackCronJob.start();

@@ -1,7 +1,6 @@
 const multer = require('multer');
 const path = require('path');
 
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './images');
@@ -9,38 +8,34 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         console.log(file);
         const lengthOfExtension = -path.extname(file.originalname).length;
-        const basename = file.originalname.slice(0,lengthOfExtension)
+        const basename = file.originalname.slice(0, lengthOfExtension)
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null,basename + '-' + uniqueSuffix + path.extname(file.originalname))
+        cb(null, basename + '-' + uniqueSuffix + path.extname(file.originalname))
     }
 });
 
-const uploadPic = multer({ 
-    storage: storage,
+const uploadPic = multer({
+    fileFilter: (req, file, cb) => {
+        checkFileType(file, cb)
+    },
     limits: {
         fileSize: 2000000
     },
-    fileFilter: (req, file, cb) => {
-        const stat = checkFileType(file,cb)
-        // console.log('stat',stat);
-    },
+    storage: storage,
 });
 
-function checkFileType(file,cb){
+function checkFileType(file, cb) {
     const filetypes = /jpeg|jpg|png/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     //check mime type
     const mimetype = filetypes.test(file.mimetype)
 
-    if(mimetype && extname){
+    if (mimetype && extname) {
         return cb(null, true);
     }
-    else{
-        return cb(`Error: Images only`);
+    else {
+       return cb(null, false, new Error('goes wrong on the mimetype'));
     }
 }
 
 module.exports = uploadPic;
-
-
-    

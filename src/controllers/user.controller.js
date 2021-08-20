@@ -27,8 +27,8 @@ exports.generatePassword = async (req, res, next) => {
 exports.createUser = async (req, res) => {
     try {
         const profilePicProps = req.file;
-        if (profilePicProps === `Error`) {
-            res.status(400).send({ message: "Upload an image in jpeg/jpg/png format" });
+        if (!req.file) {
+            res.status(400).send({ message: "Upload an image in jpeg/jpg/png format or File was not uploaded" });
             return;
         }
         userModel.find({ dev_name: res.locals.username }, (err) => {

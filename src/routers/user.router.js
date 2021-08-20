@@ -82,8 +82,8 @@ const userRouter = new express.Router();
 *               schema:
 *                   $ref: '#/components/schemas/user'
 *               example:
-*                   email: test1@neoscrum.com
-*                   password: KIRrxsSr
+*                   email: admin@neoscrum.com
+*                   password: wMxYMmrd
 *   responses:
 *    200:
 *     description: User is logged in and token is received

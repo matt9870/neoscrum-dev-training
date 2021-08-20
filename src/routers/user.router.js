@@ -160,7 +160,7 @@ userRouter.get('/dashboard', auth.verifyToken, userController.getUserDashboard, 
 */
 
 //for admin - need to add verification for Admin
-userRouter.post('/register', auth.verifyToken, upload.single('profile-pic'), userController.generatePassword, userController.createUser, (req, res) => {
+userRouter.post('/register', upload.single('profile-pic'), userController.generatePassword, userController.createUser, (req, res) => {
     res.json({ res });
 })
 

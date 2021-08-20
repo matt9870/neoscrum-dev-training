@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const sendWelcomeEmail = require('../emails/sendEmail');
 const config = require('../config/default.json');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const deleteFile = require('../helpers/deletePic.helper');
+const getMessage = require('../helpers/registerErrorMessage.helper');
 
 var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -31,10 +34,16 @@ exports.createUser = async (req, res) => {
             res.status(400).send({ message: "Upload an image in jpeg/jpg/png format or File was not uploaded" });
             return;
         }
-        userModel.find({ dev_name: res.locals.username }, (err) => {
+        if (!req.body.email || !req.body.name) {
+            deleteFile(`./images/${profilePicProps.filename}`)
+            res.status(400).send({ message: "Add proper name and email to proceed" });
+            return;
+        }
+        userModel.find({ dev_name: 'admin' }, (err) => {
             if (err || !req.body) {
                 res.status(400).send({ message: "Need to provide details to create a user" })
                 return;
+                //res.locals.username
             }
         }).then(async data => {
             try {
@@ -50,7 +59,6 @@ exports.createUser = async (req, res) => {
                             filetype: profilePicProps.mimetype
                         }]
                     });
-
                     res.locals.newUserPasswordHashed = '';
 
                     var mailOptions = {
@@ -85,13 +93,19 @@ exports.createUser = async (req, res) => {
                             res.status(400).send({ error, msg: `error while saving user data` })
                         }
                     }).catch(err => {
+                        deleteFile(`./images/${profilePicProps.filename}`)
+
+                        var message = 'Username or email already taken';
+                        message = getMessage(err.message)
+
                         res.status(400).send({
-                            message: err.message || "Error occurred"
+                            error: err.message,
+                            message
                         });
                     });
                 }
                 else {
-                    res.status(400).send({ msg: 'you are not the admin to create a user' })
+                    res.status(400).send({ msg: 'Only Admin can create users' })
                 }
                 return;
             } catch (error) {

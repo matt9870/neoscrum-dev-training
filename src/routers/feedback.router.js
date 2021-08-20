@@ -128,7 +128,7 @@ feedbackRouter.post('/feedback/:id', auth.verifyToken, feedbackController.addFee
 *      security:
 *       - bearerAuth: []
 *      tags: [Feedbacks]
-*      summary: Share feedback for a user by submitting the object id of the feedbackback form and the feedback for the receiver
+*      summary: Get the list of feedbacks or feedback forms to be submitted
 *      responses:
 *       200:
 *          description: Get the feedbacks forms to be submitted

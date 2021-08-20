@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, './images');
     },
     filename: (req, file, cb) => {
-        console.log(file);
+        // console.log(file);
         const lengthOfExtension = -path.extname(file.originalname).length;
         const basename = file.originalname.slice(0, lengthOfExtension)
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);

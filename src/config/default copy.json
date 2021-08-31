@@ -1,8 +1,0 @@
-{
-    "APP":{
-        "EMAIL_CONFIG":{
-            "EMAIL":"your-email-address",
-            "PASSWORD":"email-account-password"
-        }
-    }
-}
